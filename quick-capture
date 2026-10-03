@@ -1,0 +1,21 @@
+#!/bin/sh
+# Hotkey entry point for Quick Capture.
+#
+# Sends a command to the already-running tray app over its Unix socket, so the
+# keybinding never starts a second copy. Prints a hint if the app is not
+# running rather than failing silently.
+#
+# Resolves its own directory so the repo works from any clone location.
+here=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+app="$here/quick_capture.py"
+
+if [ ! -f "$app" ]; then
+    echo "quick-capture: $app not found" >&2
+    exit 1
+fi
+
+if ! python3 "$app" "$@" 2>/dev/null; then
+    echo "quick-capture: tray app not running." >&2
+    echo "  systemctl --user enable --now quick-capture.service" >&2
+    exit 1
+fi

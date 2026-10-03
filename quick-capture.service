@@ -1,0 +1,21 @@
+[Unit]
+Description=Quick Capture tray notes
+PartOf=graphical-session.target
+After=graphical-session.target
+ConditionEnvironment=WAYLAND_DISPLAY
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env python3 %h/DEVELOPMENT/quick-capture/quick_capture.py
+Environment=DISPLAY=:0
+# XWayland, not native Wayland. GTK3's Wayland backend reports the monitor in
+# scaled logical pixels and the compositor re-anchors move(), so popup windows
+# land mid-screen instead of under the tray. The x11 backend reports real
+# pixels and honours move().
+Environment=GDK_BACKEND=x11
+Environment=QC_LOG=/tmp/qc.log
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=graphical-session.target
