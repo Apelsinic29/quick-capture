@@ -23,11 +23,10 @@ stubs), so a systemd **user** unit is the way to autostart.
 
 | Key | Action |
 | --- | --- |
-| `` ` `` or Ctrl+`` ` `` | Capture popup |
-| Shift+`` ` `` or Ctrl+Shift+`` ` `` | Notes browser (list + editor) |
+| SUPER+SHIFT+` | Capture popup |
+| SUPER+` | Notes browser (list + editor) |
 
-Both a bare and a Ctrl-modified binding are registered because the Fn layer is
-handled by firmware, so Fn+`` ` `` may arrive as either keysym.
+The SUPER+SHIFT+grave combination is less likely to trigger accidentally during normal typing.
 
 In the capture popup:
 
@@ -65,7 +64,7 @@ The tray icon click opens a small GTK popup menu the app draws itself. It
 reports `ItemIsMenu=false` on purpose: this shell only builds a DBusMenu handle
 for apps whose menu it discovered itself, and logs `No menu present` otherwise.
 
-Two non-obvious requirements, both easy to get wrong:
+Two non-Obvious requirements, both easy to get wrong:
 
 - **`Category` must be `ApplicationStatus`** (the spec value). With
   `APPLICATION_STATUS` the shell rejects the item outright — it stays registered
@@ -80,7 +79,8 @@ copy.
 Hyprland bindings live in `~/.config/hypr/bindings.lua`:
 
 ```lua
-o.bind("grave", "Quick Capture", "~/DEVELOPMENT/quick-capture/quick-capture capture", { locked = true })
+o.bind("SUPER + SHIFT + grave", "Quick Capture", "~/DEVELOPMENT/quick-capture/quick-capture capture", { locked = true })
+o.bind("SUPER + grave", "Quick Capture notes", "~/DEVELOPMENT/quick-capture/quick-capture notes", { locked = true })
 ```
 
 ## Tray icon
